@@ -7,7 +7,9 @@ import { formatIDR } from '../utils/currency'
 
 function TopUp() {
   const { gameId } = useParams()
-  const [selectedAmount, setSelectedAmount] = useState(null)
+  const [selectedOffer, setSelectedOffer] = useState(null)
+  const [selectedType, setSelectedType] = useState('currency')
+  const [showPaymentSummary, setShowPaymentSummary] = useState(false)
   const [formData, setFormData] = useState({
     userId: '',
     email: '',
@@ -41,12 +43,40 @@ function TopUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!selectedAmount) {
-      alert('Please select an amount first')
+    if (!selectedOffer) {
+      alert('Please select an offer first')
       return
     }
-    // Payment logic will be implemented here
-    alert('Order submitted successfully!')
+    setShowPaymentSummary(true)
+  }
+
+  const renderOfferCard = (offer, type) => {
+    const isSelected = selectedOffer && selectedOffer.price === offer.price && 
+                      selectedOffer.name === offer.name && selectedType === type
+
+    return (
+      <div
+        key={`${offer.name}-${offer.price}`}
+        className={`amount-card ${isSelected ? 'selected' : ''}`}
+        onClick={() => {
+          setSelectedOffer(offer)
+          setSelectedType(type)
+        }}
+      >
+        {type === 'currency' ? (
+          <>
+            <div className="amount-value">{offer.amount}</div>
+            <div className="amount-name">{offer.name}</div>
+          </>
+        ) : (
+          <>
+            <div className="offer-name">{offer.name}</div>
+            <div className="offer-description">{offer.description}</div>
+          </>
+        )}
+        <div className="amount-price">{formatIDR(offer.price)}</div>
+      </div>
+    )
   }
 
   return (
@@ -61,99 +91,152 @@ function TopUp() {
             <h2>{game.name}</h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="topup-form">
-            <div className="form-section">
-              <h3>Select Amount</h3>
-              <div className="amount-grid">
-                {game.amounts.map((amount, index) => {
-                  const currencyType = Object.keys(amount).find(key => key !== 'price')
-                  return (
-                    <div
-                      key={index}
-                      className={`amount-card ${selectedAmount === amount ? 'selected' : ''}`}
-                      onClick={() => setSelectedAmount(amount)}
-                    >
-                      <div className="amount-info">
-                        <span className="amount-value">{amount[currencyType]} {currencyType}</span>
-                        <span className="amount-price">{formatIDR(amount.price)}</span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+          <div className="amount-selection">
+            <div className="offer-tabs">
+              <button 
+                className={`tab-button ${selectedType === 'currency' ? 'active' : ''}`}
+                onClick={() => setSelectedType('currency')}
+              >
+                Game Currency
+              </button>
+              <button 
+                className={`tab-button ${selectedType === 'special' ? 'active' : ''}`}
+                onClick={() => setSelectedType('special')}
+              >
+                Special Offers
+              </button>
+              <button 
+                className={`tab-button ${selectedType === 'gamepass' ? 'active' : ''}`}
+                onClick={() => setSelectedType('gamepass')}
+              >
+                Game Pass
+              </button>
             </div>
 
-            <div className="form-section">
-              <h3>Enter Details</h3>
-              <div className="form-group">
-                <label htmlFor="userId">User ID and Server</label>
-                <input
-                  type="text"
-                  id="userId"
-                  name="userId"
-                  value={formData.userId}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Enter your game ID and Server"
-                />
-              </div>
+            <div className="amount-grid">
+              {game.offers[selectedType].map(offer => renderOfferCard(offer, selectedType))}
+            </div>
+          </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Enter your email"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="topup-form">
+            <div className="form-group">
+              <label htmlFor="userId">User ID</label>
+              <input
+                type="text"
+                id="userId"
+                name="userId"
+                value={formData.userId}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-              <div className="form-group">
-                <label htmlFor="phone">Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Enter your phone number"
-                />
-              </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="phone">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="selected-amount">
+              {selectedOffer && (
+                <div className="amount-summary">
+                  <h3>Selected Offer:</h3>
+                  <p className="amount-detail">
+                    {selectedType === 'currency' 
+                      ? `${selectedOffer.amount} ${selectedOffer.name}`
+                      : selectedOffer.name}
+                  </p>
+                  {selectedType !== 'currency' && (
+                    <p className="offer-description">{selectedOffer.description}</p>
+                  )}
+                  <p className="price-detail">{formatIDR(selectedOffer.price)}</p>
+                </div>
+              )}
             </div>
 
             <div className="payment-section">
-              <div className="price-summary">
-                <span>Total Amount:</span>
-                <span className="total-price">
-                  {selectedAmount ? formatIDR(selectedAmount.price) : 'Rp 0'}
-                </span>
-              </div>
-              
-              <button 
-                type="submit" 
-                className={`payment-button ${!selectedAmount ? 'disabled' : ''}`}
-                disabled={!selectedAmount}
-              >
-                <span className="payment-button-content">
-                  <i className="fas fa-lock"></i>
-                  <span className="payment-text">
-                    Pay Securely
-                    {selectedAmount && (
-                      <span className="payment-amount">
-                        {formatIDR(selectedAmount.price)}
+              {showPaymentSummary ? (
+                <>
+                  <div className="payment-summary">
+                    <div className="summary-row">
+                      <span>Subtotal</span>
+                      <span>{selectedOffer ? formatIDR(selectedOffer.price) : '-'}</span>
+                    </div>
+                    <div className="summary-row">
+                      <span>Platform Fee</span>
+                      <span>{selectedOffer ? formatIDR(1000) : '-'}</span>
+                    </div>
+                    <div className="summary-row total">
+                      <span>Total Payment</span>
+                      <span>{selectedOffer ? formatIDR(selectedOffer.price + 1000) : '-'}</span>
+                    </div>
+                  </div>
+                  <button 
+                    className="payment-button"
+                    onClick={() => {
+                      // Payment processing logic will be implemented here
+                      alert('Processing payment...')
+                      setShowPaymentSummary(false)
+                      // Reset form
+                      setFormData({
+                        userId: '',
+                        email: '',
+                        phone: ''
+                      })
+                      setSelectedOffer(null)
+                    }}
+                  >
+                    <span className="payment-button-content">
+                      <i className="fas fa-lock"></i>
+                      <span className="payment-text">
+                        Confirm Payment
+                        <span className="payment-amount">
+                          {formatIDR(selectedOffer.price + 1000)}
+                        </span>
                       </span>
-                    )}
+                    </span>
+                  </button>
+                </>
+              ) : (
+                <button 
+                  type="submit" 
+                  className={`payment-button ${!selectedOffer ? 'disabled' : ''}`}
+                  disabled={!selectedOffer}
+                >
+                  <span className="payment-button-content">
+                    <i className="fas fa-lock"></i>
+                    <span className="payment-text">
+                      Review Payment
+                      {selectedOffer && (
+                        <span className="payment-amount">
+                          {formatIDR(selectedOffer.price)}
+                        </span>
+                      )}
+                    </span>
                   </span>
-                </span>
-              </button>
-
+                </button>
+              )}
               <div className="secure-info">
                 <i className="fas fa-shield-alt"></i>
-                <span>Secure Payment by <strong>GameTopUp</strong></span>
+                <span>Secure payment by RxRStore</span>
               </div>
             </div>
           </form>
