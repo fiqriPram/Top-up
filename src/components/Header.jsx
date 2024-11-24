@@ -32,8 +32,7 @@ function Header() {
     <header className="site-header">
       <div className="header-content">
         <Link to="/" className="logo">
-          <img src="/logo.png" alt="GameTopUp" />
-          <span>GameTopUp</span>
+          <span>RxRStore</span>
         </Link>
 
         <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>

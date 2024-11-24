@@ -2,7 +2,7 @@ export const games = [
   {
     id: 1,
     name: "Mobile Legends",
-    image: "/ml.jpg",
+    image: "/public/img/ml.jpg",
     amounts: [
       { diamonds: 100, price: 310000 },
       { diamonds: 200, price: 620000 },
@@ -12,7 +12,7 @@ export const games = [
   {
     id: 2,
     name: "PUBG Mobile",
-    image: "/pubg.jpg",
+    image: "/public/img/pubg.jpg",
     amounts: [
       { uc: 60, price: 15000 },
       { uc: 300, price: 77000 },
@@ -22,7 +22,7 @@ export const games = [
   {
     id: 3,
     name: "Free Fire",
-    image: "/ff.jpg",
+    image: "/public/img/ff.jpg",
     amounts: [
       { diamonds: 100, price: 15500 },
       { diamonds: 310, price: 46500 },
@@ -32,7 +32,7 @@ export const games = [
   {
     id: 4,
     name: "Genshin Impact",
-    image: "/genshin.jpg",
+    image: "/public/img/genshin.jpg",
     amounts: [
       { crystals: 60, price: 15000 },
       { crystals: 300, price: 77000 },
@@ -43,7 +43,7 @@ export const games = [
   {
     id: 5,
     name: "Valorant",
-    image: "/valorant.jpg",
+    image: "/public/img/valorant.jpg",
     amounts: [
       { points: 475, price: 77000 },
       { points: 1000, price: 155000 },
@@ -54,7 +54,7 @@ export const games = [
   {
     id: 6,
     name: "Point Blank",
-    image: "/pb.jpg",
+    image: "/public/img/pb.jpg",
     amounts: [
       { cash: 1200, price: 77000 },
       { cash: 2400, price: 155000 },
@@ -65,7 +65,7 @@ export const games = [
   {
     id: 7,
     name: "Honor of Kings",
-    image: "/hok.jpg",
+    image: "/public/img/hok.jpg",
     amounts: [
       { vouchers: 100, price: 31000 },
       { vouchers: 300, price: 93000 },
