@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import TopUp from './pages/TopUp'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Transaction from './pages/Transaction'
 import './App.css'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/topup/:gameId" element={<TopUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/transaction" element={<Transaction />} />
       </Routes>
     </Router>
   )

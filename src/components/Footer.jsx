@@ -26,7 +26,7 @@ function Footer() {
           <ul>
             <li>
               <a href="https://wa.me/your-number" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-whatsapp"></i> WhatsApp Support
+                <i className="fab fa-whatsapp"></i> WhatsApp
               </a>
             </li>
           </ul>

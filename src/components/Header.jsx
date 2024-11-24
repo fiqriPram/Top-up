@@ -41,9 +41,22 @@ function Header() {
   return (
     <header className="site-header">
       <div className="header-content">
-        <Link to="/" className="logo">
-          <span>RxRStore</span>
-        </Link>
+        <div className="header-left">
+          <div className="logo">
+            <Link to="/">
+              <div className="logo-container">
+                <div className="logo-text">
+                  <span className="logo-name">RXRSTORE</span>
+                  <span className="logo-tagline">Premium Game Store</span>
+                </div>
+              </div>
+            </Link>
+          </div>
+          <Link to="/transaction" className="transaction-link">
+            <i className="fas fa-history"></i>
+            <span className="transaction-text">Transactions</span>
+          </Link>
+        </div>
 
         <div className="header-actions">
           <div className="search-wrapper">
