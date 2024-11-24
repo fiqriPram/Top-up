@@ -28,6 +28,16 @@ function Header() {
     console.log('Searching for:', searchQuery)
   }
 
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen)
+    if (!isSearchOpen) {
+      // Focus the input when search box opens
+      setTimeout(() => {
+        document.querySelector('.search-input')?.focus()
+      }, 100)
+    }
+  }
+
   return (
     <header className="site-header">
       <div className="header-content">
@@ -35,33 +45,25 @@ function Header() {
           <span>RxRStore</span>
         </Link>
 
-        <div className={`search-container ${isSearchOpen ? 'active' : ''}`}>
-          <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="Search games..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="search-btn">
+        <div className="header-actions">
+          <div className="search-wrapper">
+            <form onSubmit={handleSearch} className={`search-form ${isSearchOpen ? 'show' : ''}`}>
+              <input
+                className="search-input"
+                type="text"
+                placeholder="Search games..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </form>
+            <button onClick={toggleSearch} className="search-icon-btn">
               <i className="fas fa-search"></i>
             </button>
-          </form>
-        </div>
-
-        <div className="header-actions">
-          <button 
-            className="mobile-search-toggle"
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            aria-label="Toggle search"
-          >
-            <i className="fas fa-search"></i>
-          </button>
-
+          </div>
           <button 
             className="theme-toggle"
             onClick={toggleDarkMode}
-            aria-label="Toggle dark mode"
+            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
             <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
           </button>
