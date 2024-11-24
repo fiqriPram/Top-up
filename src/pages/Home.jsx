@@ -23,7 +23,6 @@ function Home() {
                 <img src={game.image} alt={game.name} />
                 <div className="game-info">
                   <h3>{game.name}</h3>
-                  <span>Click to select</span>
                 </div>
               </Link>
             ))}
